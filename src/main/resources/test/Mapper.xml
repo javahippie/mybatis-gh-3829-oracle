@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="test.Mapper">
+
+  <!--
+    An IN list with two or more binds, followed by a bind
+    whose type Oracle cannot describe (here: ROWNUM <= ?).
+  -->
+  <select id="getUsers" resultType="test.User">
+    select id, name from users
+    where id in
+    <foreach item="id" collection="ids" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+    and ROWNUM &lt;= #{maxRows}
+    order by id
+  </select>
+
+</mapper>
